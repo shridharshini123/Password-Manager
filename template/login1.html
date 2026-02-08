@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Manager</title>
+    <style>
+        body {
+            margin: 0;
+            font-family:Helvetica;
+            display: flex;
+            height: 100vh;
+        }
+        .split {
+            width: 50%;
+            position: relative;
+        }
+        .left {
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .right {
+            background: linear-gradient(135deg, #BFF0FA 0%, #4998FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .centered img {
+            width: 400px;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            
+        }
+        .form-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-container input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: 10px; /* Adjust the left margin to move the input slightly to the left */
+        }
+        .form-container p {
+            text-align: center;
+        }
+        .form-container button {
+            padding: 15px;
+            width: 70%;
+            background-color: #FD7401;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block; /* Ensure button occupies full width */
+            margin: 0 auto; /* Center the button horizontally */
+        }
+        .google {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Adjust as needed */
+        }
+        .logo{
+            width: 350px;
+        }
+        .fb {
+            display: flex;
+            justify-content: center; /* Center the content horizontally */
+            align-items: center;
+            margin-top: 20px; /* Adjust as needed */
+
+        }
+        .fb img {
+            margin-right: 100px; /* Adjust spacing between images */
+            width: 30px; /* Set the same width for both images */
+        }
+        .fb img:last-child {
+            margin-right: 0; /* Remove margin from last image */
+            justify-content: center; /* Center align the last image */
+        }
+        .copyright{
+           position:fixed;
+           bottom:0;
+           left:0; 
+        }
+        #captcha {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: 10px; /* Adjust the left margin */
+            font-size: 14px; /* Adjust font size if necessary */
+            background-color: #f9f9f9; /* Add background color */
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+        }
+        .ctext {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+            color: rgb(191, 187, 187);
+            font-family: 'Roboto', sans-serif; /* Or any preferred font */
+            position: relative;
+            padding: 10px; /* Reduced padding to decrease the height */
+            background-image: url("{{ url_for('static', filename='noise-pattern.jpg') }}");
+            background-size: 40px; /* Adjust the size of the background image */
+
+        }
+
+        .ctext span {
+            display: inline-block;
+            position: relative;
+            transform: rotate(15deg) skew(-15deg);
+            animation: wave 2s ease-in-out infinite, noise 3s infinite;
+        }
+
+        /* Apply random animation for text distortion */
+        @keyframes wave {
+            0% { transform: rotate(5deg) skew(5deg); }
+            20% { transform: rotate(-10deg) skew(10deg); }
+            40% { transform: rotate(20deg) skew(-20deg); }
+            60% { transform: rotate(-5deg) skew(-5deg); }
+            80% { transform: rotate(10deg) skew(5deg); }
+            100% { transform: rotate(0deg) skew(0deg); }
+        }
+
+        @keyframes noise {
+            0% { left: 0px; top: 0px; }
+            50% { left: 10px; top: -10px; }
+            100% { left: 0px; top: 0px; }
+        }
+
+        .ctext span {
+            position: relative;
+            animation: moveNoise 0.1s ease-in-out infinite;
+        }
+
+        /* Add subtle lines or noise pattern */
+        @keyframes moveNoise {
+            0% { transform: rotate(5deg) skew(-5deg); }
+            50% { transform: rotate(-20deg) skew(20deg); }
+            100% { transform: rotate(15deg) skew(-10deg); }
+        }
+
+        .ctext::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-image: url("{{ url_for('static', filename='noise-pattern.jpg') }}");
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+
+        p {
+            font-size: 14px;
+            text-align: center;
+            color: #333;
+            margin: 10px 0;
+            font-family: Helvetica, Arial, sans-serif; /* Ensure consistency with other text */
+        }
+
+        p b {
+            font-weight: bold; /* Make the text bold if needed */
+        }
+
+        p a {
+            color: #007BFF; /* Style the link color */
+            text-decoration: none; /* Remove underline from the link */
+        }
+
+        p a:hover {
+            text-decoration: underline; /* Add underline on hover for interactivity */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="split left">
+    <img src="{{ url_for('static', filename='sme-sg-cybervault-logo.png') }}" alt="logo" class="logo">       
+     <h3>Password Manager</h3>
+        <div class="form-container">
+            <p><b>Login into your account</b></p>
+            <form action="/" method="post">
+                <label for="username">Email:</label>
+                <input type="email" name="email" id="email" required>
+                <label for="pwd">Password:</label>
+                <input type="password" name="password" id="password" required>
+                <p><a href="/forgot">Forgot password</a></p>
+                <label for="captcha">Enter CAPTCHA:</label>
+                <input type="text" id="captcha" name="captcha" required>
+                
+                <p class="captcha-text">CAPTCHA: <span class="ctext">{{ captcha_text }}</span></p>
+                <p style="color: red;">{{error}}</p>
+                <button type="submit">Login</button>
+                <p><a href="/signup">Create an Account</a></form></p>
+            </form>
+            <p>or</p>
+        <div class="fb">
+            <img src="{{ url_for('static', filename='FB.png') }}" alt="FB Login" >
+            <img src="{{ url_for('static', filename='google.png') }}"  alt="Google Login" >
+            <img src="{{ url_for('static', filename='X.png') }}" alt="X Login" >
+
+        </div>
+        </div>
+        <p class="copyright"><b>© 2024 Cybervault. All rights reserved</b></p>
+
+
+    </div>
+    <div class="split right">
+        <div class="centered">
+            <img src="{{ url_for('static', filename='right-side.png') }}" alt="logo">
+        </div>
+    </div>
+</body>
+</html>
